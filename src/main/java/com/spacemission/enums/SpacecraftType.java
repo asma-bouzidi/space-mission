@@ -1,0 +1,9 @@
+package com.spacemission.enums;
+
+public enum SpacecraftType {
+    COMMUNICATION_SATELLITE,
+    OBSERVATION_SATELLITE,
+    NAVIGATION_SATELLITE,
+    SCIENTIFIC_SATELLITE,
+    EXPLORATION_SPACECRAFT
+}
