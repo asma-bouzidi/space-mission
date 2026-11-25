@@ -128,7 +128,7 @@ public class AnomalyService {
         String metricName = rule.getMetricName() == null ? "" : rule.getMetricName().toLowerCase();
         String ruleName = rule.getName() == null ? "" : rule.getName().toLowerCase();
 
-        if (metricName.contains("battery") || metricName.contains("fuel") || metricName.contains("signal") || ruleName.contains("low") || ruleName.contains("critical")) {
+        if (metricName.contains("battery") || metricName.contains("fuel") || metricName.contains("signal") || ruleName.contains("low")) {
             return currentValue <= rule.getThresholdValue();
         }
 

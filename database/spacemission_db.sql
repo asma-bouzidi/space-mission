@@ -215,6 +215,4 @@ INSERT INTO spacecraft_types (name, description) VALUES
 
 INSERT INTO anomaly_rules (name, severity, enabled, threshold_value, metric_name, description) VALUES
 ('LOW_BATTERY', 'WARNING', TRUE, 20.0, 'battery_percentage', 'Battery below warning threshold'),
-('CRITICAL_FUEL', 'CRITICAL', TRUE, 15.0, 'fuel_percentage', 'Fuel below critical threshold'),
-('HIGH_TEMPERATURE', 'WARNING', TRUE, 70.0, 'temperature', 'Temperature above safe range'),
-('COMMUNICATION_LOSS', 'CRITICAL', TRUE, 10.0, 'signal_strength', 'Communication signal too weak');
+('HIGH_TEMPERATURE', 'WARNING', TRUE, 70.0, 'temperature', 'Temperature above safe range');

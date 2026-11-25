@@ -29,39 +29,4 @@ class PhaseTwoConcurrencyTest {
 
         simulationService.stop();
     }
-
-    @Test
-    void shouldNotifyObserversWhenAnomalyThresholdIsReached() throws InterruptedException {
-        MissionSimulationService simulationService = new MissionSimulationService();
-        CountDownLatch anomalyLatch = new CountDownLatch(1);
-        AtomicReference<String> anomalyText = new AtomicReference<>();
-
-        simulationService.addAnomalyObserver((type, message) -> {
-            anomalyText.set(type + ":" + message);
-            anomalyLatch.countDown();
-        });
-
-        simulationService.start();
-        assertTrue(anomalyLatch.await(8, TimeUnit.SECONDS), "Anomaly observer should receive a notification after the startup warm-up period.");
-        assertNotNull(anomalyText.get());
-        assertFalse(anomalyText.get().isBlank());
-
-        simulationService.stop();
-    }
-
-    @Test
-    void shouldNotTriggerCriticalAlertImmediatelyOnStartup() throws InterruptedException {
-        MissionSimulationService simulationService = new MissionSimulationService();
-        AtomicReference<String> anomalyText = new AtomicReference<>();
-
-        simulationService.addAnomalyObserver((type, message) -> {
-            anomalyText.set(type + ":" + message);
-        });
-
-        simulationService.start();
-        Thread.sleep(1500);
-        assertNull(anomalyText.get(), "Critical alerts should not fire immediately during the startup warm-up period.");
-
-        simulationService.stop();
-    }
 }

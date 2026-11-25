@@ -14,7 +14,6 @@ public class MissionSimulationService {
     private int fuelReserve = 72;
     private int signalStrength = 92;
     private int activeMissions = 12;
-    private int criticalAlerts = 4;
     private int systemHealth = 97;
 
     private final List<TelemetryObserver> telemetryObservers = new CopyOnWriteArrayList<>();
@@ -45,7 +44,7 @@ public class MissionSimulationService {
                 tickCount++;
 
                 if (tickCount > ANOMALY_STARTUP_WARMUP_TICKS && shouldTriggerAnomaly(snapshot)) {
-                    notifyAnomalyObservers("SYSTEM_ALERT", "Critical alert surge detected: " + snapshot.getCriticalAlerts() + " alerts active.");
+                    notifyAnomalyObservers("SYSTEM_ALERT", "Telemetry threshold exceeded: battery or signal strength is low.");
                 }
             } catch (Exception ex) {
                 notifyAnomalyObservers("SIMULATION_ERROR", "Simulation loop failed: " + ex.getMessage());
@@ -92,14 +91,13 @@ public class MissionSimulationService {
         fuelReserve = clamp(fuelReserve + ThreadLocalRandom.current().nextInt(-5, 6));
         signalStrength = clamp(signalStrength + ThreadLocalRandom.current().nextInt(-6, 7));
         activeMissions = clampRange(activeMissions + ThreadLocalRandom.current().nextInt(-2, 3), 9, 16);
-        criticalAlerts = clampRange(criticalAlerts + ThreadLocalRandom.current().nextInt(-2, 3), 1, 8);
         systemHealth = clamp(systemHealth + ThreadLocalRandom.current().nextInt(-3, 4));
 
-        return new SimulationSnapshot(batteryLevel, fuelReserve, signalStrength, activeMissions, criticalAlerts, systemHealth);
+        return new SimulationSnapshot(batteryLevel, fuelReserve, signalStrength, activeMissions, systemHealth);
     }
 
     private boolean shouldTriggerAnomaly(SimulationSnapshot snapshot) {
-        return snapshot.getCriticalAlerts() >= 3 || snapshot.getBatteryLevel() <= 60 || snapshot.getSignalStrength() <= 60;
+        return snapshot.getBatteryLevel() <= 60 || snapshot.getSignalStrength() <= 60;
     }
 
     private void notifyTelemetryObservers(SimulationSnapshot snapshot) {
@@ -137,16 +135,14 @@ public class MissionSimulationService {
         private final int fuelReserve;
         private final int signalStrength;
         private final int activeMissions;
-        private final int criticalAlerts;
         private final int systemHealth;
 
         public SimulationSnapshot(int batteryLevel, int fuelReserve, int signalStrength,
-                                 int activeMissions, int criticalAlerts, int systemHealth) {
+                                 int activeMissions, int systemHealth) {
             this.batteryLevel = batteryLevel;
             this.fuelReserve = fuelReserve;
             this.signalStrength = signalStrength;
             this.activeMissions = activeMissions;
-            this.criticalAlerts = criticalAlerts;
             this.systemHealth = systemHealth;
         }
 
@@ -154,7 +150,6 @@ public class MissionSimulationService {
         public int getFuelReserve() { return fuelReserve; }
         public int getSignalStrength() { return signalStrength; }
         public int getActiveMissions() { return activeMissions; }
-        public int getCriticalAlerts() { return criticalAlerts; }
         public int getSystemHealth() { return systemHealth; }
     }
 }

@@ -150,7 +150,6 @@ public class DashboardFrame extends JFrame {
         GlassCard totalSpacecraft = new GlassCard("Total spacecraft", metrics.getOrDefault("totalSpacecraft", "0"));
         GlassCard activeMissions = new GlassCard("Active missions", metrics.getOrDefault("activeMissions", "0"));
         GlassCard completed = new GlassCard("Completed", metrics.getOrDefault("completedMissions", "0"));
-        GlassCard criticalAlerts = new GlassCard("Critical alerts", metrics.getOrDefault("criticalAlerts", "0"));
         GlassCard meanBattery = new GlassCard("Mean battery", metrics.getOrDefault("meanBattery", "0%"));
         GlassCard fuelReserve = new GlassCard("Fuel reserve", "0%");
         GlassCard successRate = new GlassCard("Success rate", "0%");
@@ -159,7 +158,6 @@ public class DashboardFrame extends JFrame {
         overviewCards.put("Total spacecraft", totalSpacecraft);
         overviewCards.put("Active missions", activeMissions);
         overviewCards.put("Completed", completed);
-        overviewCards.put("Critical alerts", criticalAlerts);
         overviewCards.put("Mean battery", meanBattery);
         overviewCards.put("Fuel reserve", fuelReserve);
         overviewCards.put("Success rate", successRate);
@@ -168,7 +166,6 @@ public class DashboardFrame extends JFrame {
         cards.add(totalSpacecraft);
         cards.add(activeMissions);
         cards.add(completed);
-        cards.add(criticalAlerts);
         cards.add(meanBattery);
         cards.add(fuelReserve);
         cards.add(successRate);
@@ -217,9 +214,6 @@ public class DashboardFrame extends JFrame {
             }
             if (overviewCards.containsKey("Completed")) {
                 overviewCards.get("Completed").setValue(metrics.getOrDefault("completedMissions", "0"));
-            }
-            if (overviewCards.containsKey("Critical alerts")) {
-                overviewCards.get("Critical alerts").setValue(String.valueOf(snapshot.getCriticalAlerts()));
             }
             if (overviewCards.containsKey("Mean battery")) {
                 overviewCards.get("Mean battery").setValue(snapshot.getBatteryLevel() + "%");
